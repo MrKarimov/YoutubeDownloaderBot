@@ -8,11 +8,14 @@ import os
 import csv
 from aiogram.types import FSInputFile
 
-ADMIN = os.getenv("ADMIN")
+ADMIN = int(os.getenv("ADMIN"))
 print(f"Admin ID: {ADMIN}")
 
+ADMIN = int(os.getenv("ADMIN"))
+print(ADMIN)
 admin_router = Router()
-@admin_router.message(F.from_user.id == int(ADMIN), F.text == "/admin")
+
+@admin_router.message(F.from_user.id == ADMIN, F.text == "/admin")
 async def admin_panel(message: types.Message):
     kb = [
         [types.KeyboardButton(text="👥 Users")],
@@ -23,7 +26,7 @@ async def admin_panel(message: types.Message):
     await message.answer("👮‍♂️ Admin panelga xush kelibsiz!", reply_markup=markup)
 
 
-@admin_router.message(F.from_user.id== int(ADMIN), F.text == "👥 Users")
+@admin_router.message(F.from_user.id== ADMIN, F.text == "👥 Users")
 async def show_users(message: types.Message):
     users = await user_info()
     if users:
@@ -32,7 +35,7 @@ async def show_users(message: types.Message):
         text = "Foydalanuvchilar yo‘q."
     await message.answer(text)
 
-@admin_router.message(F.from_user.id == int(ADMIN), F.text == "📠Create CSV")
+@admin_router.message(F.from_user.id == ADMIN, F.text == "📠Create CSV")
 async def create_csv_file(message: types.Message):
     users = await user_full_info()
     
@@ -41,7 +44,7 @@ async def create_csv_file(message: types.Message):
         return
 
     filename = "users.csv"
-   
+    # CSV faylga yozish
     with open(filename, "w", newline='', encoding="utf-8") as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(["User ID", "Username", "Full Name", "Joined At"])  # sarlavha
@@ -62,7 +65,7 @@ class BroadcastState(StatesGroup):
     waiting_for_message = State()
 
 
-@admin_router.message(F.from_user.id == int(ADMIN), F.text == "📢 Send Ads")
+@admin_router.message(F.from_user.id == ADMIN, F.text == "📢 Send Ads")
 async def start_broadcast(message: types.Message, state: FSMContext):
     await message.answer("📨 Reklama matnini yuboring:", reply_markup=ReplyKeyboardRemove())
     await state.set_state(BroadcastState.waiting_for_message)
