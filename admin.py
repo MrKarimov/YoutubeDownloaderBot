@@ -8,10 +8,14 @@ from dotenv import load_dotenv
 import os
 import csv
 from aiogram.types import FSInputFile
-load_dotenv()
+import os
 
-ADMIN = int(os.getenv("ADMIN"))
-print(ADMIN)
+admin_id = os.environ.get("ADMIN")
+if admin_id is None:
+    raise RuntimeError("❌ ADMIN environment variable is missing in Railway!")
+
+ADMIN = int(admin_id)
+
 admin_router = Router()
 
 @admin_router.message(F.from_user.id == ADMIN, F.text == "/admin")
