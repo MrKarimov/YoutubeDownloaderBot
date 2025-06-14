@@ -8,7 +8,7 @@ import os
 import csv
 from aiogram.types import FSInputFile
 
-ADMIN = int(os.getenv("ADMIN"))
+ADMIN = os.getenv("ADMIN")
 print(f"Admin ID: {ADMIN}")
 
 ADMIN = int(os.getenv("ADMIN"))
