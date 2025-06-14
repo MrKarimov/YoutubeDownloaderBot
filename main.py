@@ -7,8 +7,9 @@ from aiogram import Bot, Dispatcher, F
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.types import FSInputFile, Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
-from aiogram.filters import Command
-
+from database.database import ensure_db_exists
+from admin import admin_router
+from handlers import user_router
 from dotenv import load_dotenv
 
 from youtube import get_resolutions, download_video
@@ -21,16 +22,9 @@ dp = Dispatcher()
 user_links = {}  # user_id : youtube link
 
 
-@dp.message(Command(commands=["start", "admin"]))
-async def start_handler(message: Message):
-    if message.text == "/start":
-        await message.answer(f"Hi, {message.from_user.full_name}! Send a YouTube link.")
-    elif message.text == "/admin":
-        await message.answer(
-            "Name: Islom\n"
-            "Lastname: Karimov\n"
-            "TG: https://t.me/kar1movss"
-        )
+dp.include_router(admin_router)
+dp.include_router(user_router)
+
 
 
 @dp.message(F.text.func(lambda text: "youtu" in text))
@@ -74,6 +68,7 @@ async def handle_resolution(callback: CallbackQuery):
         await callback.message.answer("❌ Failed to download the video. Please try again later.")
 
 async def main():
+    await ensure_db_exists()
     bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
     await dp.start_polling(bot)
 
