@@ -8,13 +8,9 @@ import os
 import csv
 from aiogram.types import FSInputFile
 
-ADMIN = os.getenv("ADMIN")
-print(f"Admin ID: {ADMIN}")
-
 ADMIN = int(os.getenv("ADMIN"))
 print(ADMIN)
 admin_router = Router()
-
 @admin_router.message(F.from_user.id == ADMIN, F.text == "/admin")
 async def admin_panel(message: types.Message):
     kb = [
