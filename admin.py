@@ -9,7 +9,6 @@ import csv
 from aiogram.types import FSInputFile
 
 ADMIN = int(os.getenv("ADMIN"))
-print(ADMIN)
 admin_router = Router()
 @admin_router.message(F.from_user.id == ADMIN, F.text == "/admin")
 async def admin_panel(message: types.Message):
@@ -19,7 +18,7 @@ async def admin_panel(message: types.Message):
         [types.KeyboardButton(text="📢 Send Ads")],
     ]
     markup = types.ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
-    await message.answer("👮‍♂️ Admin panelga xush kelibsiz!", reply_markup=markup)
+    await message.answer("👮‍♂️ Welcome!", reply_markup=markup)
 
 
 @admin_router.message(F.from_user.id== ADMIN, F.text == "👥 Users")

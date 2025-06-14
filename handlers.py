@@ -12,7 +12,8 @@ async def start_handler(message: types.Message):
     # Foydalanuvchini DBga qo‘shish (agar yo‘q bo‘lsa)
     await add_user(user_id, username, full_name)
 
-    await message.answer(f"Salom, {full_name}! Botga xush kelibsiz 👋")
+    await message.answer(f"Hello, {full_name}! 👋\n\nWelcome to the YouTube Downloader Bot.\nSimply send a YouTube link below, and I’ll help you download it in your preferred quality. 🎥📥"
+)
 
 
 

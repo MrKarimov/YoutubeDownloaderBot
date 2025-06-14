@@ -10,11 +10,7 @@ from aiogram.types import FSInputFile, Message, InlineKeyboardMarkup, InlineKeyb
 from database.database import ensure_db_exists
 from admin import admin_router
 from handlers import user_router
-from dotenv import load_dotenv
-
 from youtube import get_resolutions, download_video
-
-load_dotenv()
 
 TOKEN = os.getenv("BOT_TOKEN")
 
@@ -24,8 +20,6 @@ user_links = {}  # user_id : youtube link
 
 dp.include_router(admin_router)
 dp.include_router(user_router)
-
-
 
 @dp.message(F.text.func(lambda text: "youtu" in text))
 async def handle_youtube_link(message: Message):
