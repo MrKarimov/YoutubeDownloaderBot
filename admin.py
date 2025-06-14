@@ -4,21 +4,15 @@ from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
 from aiogram import Router, types, F,Bot
 from database.database import user_info,  user_full_info, get_all_user_ids
-from dotenv import load_dotenv
 import os
 import csv
 from aiogram.types import FSInputFile
-import os
 
-admin_id = os.environ.get("ADMIN")
-if admin_id is None:
-    raise RuntimeError("❌ ADMIN environment variable is missing in Railway!")
-
-ADMIN = int(admin_id)
+ADMIN = os.getenv("ADMIN")
+print(f"Admin ID: {ADMIN}")
 
 admin_router = Router()
-
-@admin_router.message(F.from_user.id == ADMIN, F.text == "/admin")
+@admin_router.message(F.from_user.id == int(ADMIN), F.text == "/admin")
 async def admin_panel(message: types.Message):
     kb = [
         [types.KeyboardButton(text="👥 Users")],
@@ -29,7 +23,7 @@ async def admin_panel(message: types.Message):
     await message.answer("👮‍♂️ Admin panelga xush kelibsiz!", reply_markup=markup)
 
 
-@admin_router.message(F.from_user.id== ADMIN, F.text == "👥 Users")
+@admin_router.message(F.from_user.id== int(ADMIN), F.text == "👥 Users")
 async def show_users(message: types.Message):
     users = await user_info()
     if users:
@@ -38,7 +32,7 @@ async def show_users(message: types.Message):
         text = "Foydalanuvchilar yo‘q."
     await message.answer(text)
 
-@admin_router.message(F.from_user.id == ADMIN, F.text == "📠Create CSV")
+@admin_router.message(F.from_user.id == int(ADMIN), F.text == "📠Create CSV")
 async def create_csv_file(message: types.Message):
     users = await user_full_info()
     
@@ -68,7 +62,7 @@ class BroadcastState(StatesGroup):
     waiting_for_message = State()
 
 
-@admin_router.message(F.from_user.id == ADMIN, F.text == "📢 Send Ads")
+@admin_router.message(F.from_user.id == int(ADMIN), F.text == "📢 Send Ads")
 async def start_broadcast(message: types.Message, state: FSMContext):
     await message.answer("📨 Reklama matnini yuboring:", reply_markup=ReplyKeyboardRemove())
     await state.set_state(BroadcastState.waiting_for_message)
