@@ -11,6 +11,7 @@ def get_resolutions(link):
             'quiet': True,
             'skip_download': True,
             'noplaylist': True,
+            'cookies': 'cookies1.txt',
         }
 
         with YoutubeDL(ydl_opts) as ydl:
@@ -39,6 +40,7 @@ def download_video(link, resolution):
             'outtmpl': output_path,
             'noplaylist': True,
             'quiet': True,
+            'cookies': 'cookies1.txt',
             'user_agent': (
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                 "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
