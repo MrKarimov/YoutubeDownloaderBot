@@ -13,6 +13,7 @@ WORKDIR /app
 
 # requirements.txt ni nusxalaymiz va o‘rnatamiz
 COPY requirements.txt ./
+COPY cookies.txt /app/cookies.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Loyiha fayllarini nusxalaymiz
