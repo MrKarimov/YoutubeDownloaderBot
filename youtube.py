@@ -15,7 +15,7 @@ def get_resolutions(link):
             'quiet': True,
             'skip_download': True,
             'noplaylist': True,
-            'cookies': 'cookies.txt',
+            'cookies': './cookies.txt',
         }
 
         with YoutubeDL(ydl_opts) as ydl:
@@ -41,7 +41,7 @@ def download_video(link, resolution):
             'merge_output_format': 'mp4',
             'outtmpl': os.path.join(DOWNLOAD_DIR, f'%(title)s_{resolution}.%(ext)s'),
             'noplaylist': True,
-            'cookies': 'cookies.txt',
+            'cookies': './cookies.txt',
             'quiet': True,
             'user_agent': (
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
