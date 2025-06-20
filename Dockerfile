@@ -1,5 +1,8 @@
 FROM python:3.11-slim
 
+# ffmpeg va kerakli tizim paketlarini o‘rnatamiz
+RUN apt-get update && apt-get install -y ffmpeg && apt-get clean
+
 # ishchi papkaga o‘tamiz
 WORKDIR /app
 
