@@ -2,8 +2,12 @@ import os
 import logging
 from yt_dlp import YoutubeDL
 
+# Log sozlamasi
 logger = logging.getLogger(__name__)
-os.makedirs("downloads", exist_ok=True)
+
+# Yuklab olingan fayllar uchun papka
+DOWNLOAD_DIR = "downloads"
+os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 
 def get_resolutions(link):
     try:
@@ -11,7 +15,7 @@ def get_resolutions(link):
             'quiet': True,
             'skip_download': True,
             'noplaylist': True,
-            'cookies': 'cookies1.txt',
+            'cookies': 'cookies.txt',
         }
 
         with YoutubeDL(ydl_opts) as ydl:
@@ -32,15 +36,13 @@ def get_resolutions(link):
 def download_video(link, resolution):
     try:
         height = resolution.replace("p", "")
-        output_path = f"downloads/%(title)s_{resolution}.mp4"
-
         ydl_opts = {
-            'format': f'bestvideo[height={height}]+bestaudio/best[height={height}]',
+            'format': f'bestvideo[height={height}]+bestaudio/best',
             'merge_output_format': 'mp4',
-            'outtmpl': output_path,
+            'outtmpl': os.path.join(DOWNLOAD_DIR, f'%(title)s_{resolution}.%(ext)s'),
             'noplaylist': True,
+            'cookies': 'cookies.txt',
             'quiet': True,
-            'cookies': 'cookies1.txt',
             'user_agent': (
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                 "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
@@ -50,9 +52,12 @@ def download_video(link, resolution):
         with YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(link, download=True)
             filename = ydl.prepare_filename(info).replace(".webm", ".mp4")
+
             if os.path.exists(filename):
                 return filename
-            return None
+            else:
+                logger.warning("❌ File expected but not found after download.")
+                return None
 
     except Exception as e:
         logger.error(f"❌ Download Error in download_video(): {e}", exc_info=True)
