@@ -1,5 +1,26 @@
+import os
+import logging
+import urllib.request
 from pytubefix import YouTube
 from birlashtirish import merge_video_audio
+
+# ✅ Log sozlamasi
+logger = logging.getLogger(__name__)
+
+# ✅ Global User-Agent (403 xatolikdan saqlaydi)
+opener = urllib.request.build_opener()
+opener.addheaders = [
+    (
+        "User-Agent",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    )
+]
+urllib.request.install_opener(opener)
+
+# 📁 Yuklab olingan fayllar saqlanadigan papka
+os.makedirs("downloads", exist_ok=True)
+
 
 def get_resolutions(link):
     try:
@@ -13,8 +34,10 @@ def get_resolutions(link):
 
         return sorted(resolutions, reverse=True)
     except Exception as e:
+        logger.error(f"Error in get_resolutions(): {e}", exc_info=True)
         print("Error:", e)
         return []
+
 
 def download_video(link, resolution):
     try:
@@ -24,7 +47,7 @@ def download_video(link, resolution):
         stream = yt.streams.filter(progressive=True, file_extension='mp4', resolution=resolution).first()
 
         if stream:
-            file_path = stream.download(filename=f"{yt.video_id}_{resolution}.mp4")
+            file_path = stream.download(output_path="downloads", filename=f"{yt.video_id}_{resolution}.mp4")
             return file_path
 
         # Aks holda video + audio alohida yuklab, birlashtirish kerak
@@ -36,5 +59,6 @@ def download_video(link, resolution):
 
         return None
     except Exception as e:
+        logger.error(f"Download Error in download_video(): {e}", exc_info=True)
         print("Download Error:", e)
         return None
