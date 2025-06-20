@@ -1,6 +1,6 @@
 # 🎬 YouTube Downloader Telegram Bot
 
-This is a Telegram bot built with Python that allows users to download YouTube videos by simply sending a video link. It supports resolution selection and handles both progressive and adaptive YouTube streams. If the video and audio are separate, the bot uses `ffmpeg` to merge them before sending.
+This is a Telegram bot built with Python that allows users to download YouTube videos by simply sending a video link. It supports resolution selection and handles both progressive and adaptive YouTube streams. If the video and audio are separate, the bot uses `ffmpeg` to merge them before sending. ok
 
 ---
 
